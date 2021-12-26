@@ -3,6 +3,7 @@ package br.com.guilhermebehs.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,43 +16,42 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.guilhermebehs.models.ClientModel;
+import br.com.guilhermebehs.services.ClientService;
 
 @RestController
 @RequestMapping(path = "client")
 public class ClientController {
+	
+	@Autowired
+	ClientService clientService; 
 
 	@GetMapping
     public List<ClientModel> getAll(){
 		List<ClientModel> clients = new ArrayList<ClientModel>();
-		ClientModel client = new ClientModel(1L, "Guilherme","Behs", "1993-03-21", "Av President"); 
-		clients.add(client);
-		return clients;
+		return clientService.getAll();
 	}
 	
 	@GetMapping("/{id}")
     public ClientModel getById(@PathVariable("id") String id){
-		List<ClientModel> clients = new ArrayList<ClientModel>();
-		ClientModel client = new ClientModel(1L, "Guilherme","Behs", "1993-03-21", "Av President"); 
-		clients.add(client);
-		return clients.get(0);
+		return clientService.getById(id);
 	}
 	
 	@PostMapping
 	@ResponseStatus(code=HttpStatus.CREATED)
     public ClientModel create(@RequestBody() ClientModel newClient){
-		return newClient;
+		return clientService.create(newClient);
 	}
 	
 	@PatchMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
     public void update(@PathVariable("id") String id,@RequestBody() ClientModel client){
-		return;
+		clientService.update(id, client);
 	}
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") String id){
-		return;
+		clientService.delete(id);
 	}
 	
 	
