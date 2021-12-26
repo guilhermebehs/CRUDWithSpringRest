@@ -2,15 +2,34 @@ package br.com.guilhermebehs.models;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="client")
 public class ClientModel implements Serializable {
 	
 
 	private static final long serialVersionUID = 1L;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@Column(name = "name", nullable = false)
 	private String name;
+	
+	@Column(name = "last_name", nullable = false)
 	private String lastName;
+	
+	@Column(name = "birth", nullable = false)
 	private String birth;
+	
+	@Column(name = "address", nullable = false)
 	private String address;
 	
 	public ClientModel() {}

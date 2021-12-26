@@ -1,46 +1,45 @@
 package br.com.guilhermebehs.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import br.com.guilhermebehs.models.ClientModel;
+import br.com.guilhermebehs.repositories.ClientRepository;
 
 @Service
 public class ClientService {
-
+	
+	@Autowired
+    ClientRepository clientRepository;
+	
 	public List<ClientModel> getAll(){
-		List<ClientModel> clients = new ArrayList<ClientModel>();
-		ClientModel client = new ClientModel(1L, "Guilherme","Behs", "1993-03-21", "Av President"); 
-		clients.add(client);
-		return clients;
+		return clientRepository.findAll();
 	}
 	
-    public ClientModel getById(String id){
-		List<ClientModel> clients = new ArrayList<ClientModel>();
-		ClientModel client = new ClientModel(1L, "Guilherme","Behs", "1993-03-21", "Av President"); 
-		clients.add(client);
-		return clients.get(0);
+    public ClientModel getById(Long id){
+    	
+      return clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client with id "+id+" not found"));
 	}
 	
 	public ClientModel create(ClientModel newClient){
+		clientRepository.save(newClient);
 		return newClient;
 	}
 	
-	public void update(String id,ClientModel client){
-		return;
+	public void update(Long id,ClientModel client){
+		ClientModel clientToUpdate =  clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client with id "+id+" not found"));
+		clientToUpdate.setName(client.getName());
+		clientToUpdate.setLastName(client.getLastName());
+		clientToUpdate.setBirth(client.getBirth());
+		clientToUpdate.setAddress(client.getAddress());
+		clientRepository.save(clientToUpdate);
 	}
-	public void delete(String id){
-		return;
+	public void delete(Long id){
+		ClientModel clientToDelete = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client with id "+id+" not found"));
+		clientRepository.delete(clientToDelete);
 	}
 
 }

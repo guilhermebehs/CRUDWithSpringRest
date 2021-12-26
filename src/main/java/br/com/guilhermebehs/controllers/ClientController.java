@@ -27,12 +27,12 @@ public class ClientController {
 
 	@GetMapping
     public List<ClientModel> getAll(){
-		List<ClientModel> clients = new ArrayList<ClientModel>();
 		return clientService.getAll();
 	}
 	
 	@GetMapping("/{id}")
-    public ClientModel getById(@PathVariable("id") String id){
+    public ClientModel getById(@PathVariable("id") Long id){
+		
 		return clientService.getById(id);
 	}
 	
@@ -44,13 +44,13 @@ public class ClientController {
 	
 	@PatchMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-    public void update(@PathVariable("id") String id,@RequestBody() ClientModel client){
+    public void update(@PathVariable("id") Long id,@RequestBody() ClientModel client){
 		clientService.update(id, client);
 	}
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") String id){
+    public void delete(@PathVariable("id") Long id){
 		clientService.delete(id);
 	}
 	
