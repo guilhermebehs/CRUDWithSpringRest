@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
-import br.com.guilhermebehs.models.ClientModel;
+import br.com.guilhermebehs.converters.DozerConverter;
+import br.com.guilhermebehs.data.models.ClientModel;
+import br.com.guilhermebehs.data.vos.ClientVO;
 import br.com.guilhermebehs.repositories.ClientRepository;
 
 @Service
@@ -15,22 +17,22 @@ public class ClientService {
 	@Autowired
     ClientRepository clientRepository;
 	
-	public List<ClientModel> getAll(){
-		return clientRepository.findAll();
+	public List<ClientVO> getAll(){
+		return DozerConverter.parseListObjects(clientRepository.findAll(), ClientVO.class);
 	}
 	
-    public ClientModel getById(Long id){
-    	
-      return clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client with id "+id+" not found"));
+    public ClientVO getById(Long id){
+    	var model = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client with id "+id+" not found"));
+		return DozerConverter.parseObject(model, ClientVO.class);
 	}
 	
-	public ClientModel create(ClientModel newClient){
-		clientRepository.save(newClient);
-		return newClient;
+	public ClientVO create(ClientVO newClient){
+		var model = DozerConverter.parseObject(newClient, ClientModel.class);
+		return DozerConverter.parseObject(clientRepository.save(model), ClientVO.class);
 	}
 	
-	public void update(Long id,ClientModel client){
-		ClientModel clientToUpdate =  clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client with id "+id+" not found"));
+	public void update(Long id,ClientVO client){
+		var clientToUpdate =  clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client with id "+id+" not found"));
 		clientToUpdate.setName(client.getName());
 		clientToUpdate.setLastName(client.getLastName());
 		clientToUpdate.setBirth(client.getBirth());
@@ -38,7 +40,7 @@ public class ClientService {
 		clientRepository.save(clientToUpdate);
 	}
 	public void delete(Long id){
-		ClientModel clientToDelete = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client with id "+id+" not found"));
+		var clientToDelete = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client with id "+id+" not found"));
 		clientRepository.delete(clientToDelete);
 	}
 

@@ -1,46 +1,19 @@
-package br.com.guilhermebehs.models;
+package br.com.guilhermebehs.data.vos;
 
-import java.io.Serializable;
+public class ClientVO {
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name="client")
-public class ClientModel implements Serializable {
+private static final long serialVersionUID = 1L;
 	
-
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@Column(name = "last_name", nullable = false)
 	private String lastName;
 	
-	@Column(name = "birth", nullable = false)
 	private String birth;
 	
-	@Column(name = "address", nullable = false)
 	private String address;
-	
-	public ClientModel() {}
-	
-	public ClientModel(Long id, String name, String lastName, String birth, String address) {
-		this.id = id;
-		this.name = name;
-		this.lastName = lastName;
-		this.birth = birth;
-		this.address = address;
-	}
+		
 	
 	public Long getId() {
 		return id;
@@ -93,7 +66,7 @@ public class ClientModel implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ClientModel other = (ClientModel) obj;
+		ClientVO other = (ClientVO) obj;
 		if (address == null) {
 			if (other.address != null)
 				return false;
@@ -121,5 +94,4 @@ public class ClientModel implements Serializable {
 			return false;
 		return true;
 	}
-
 }

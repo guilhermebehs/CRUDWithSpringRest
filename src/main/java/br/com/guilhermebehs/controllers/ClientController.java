@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.guilhermebehs.models.ClientModel;
+import br.com.guilhermebehs.data.models.ClientModel;
+import br.com.guilhermebehs.data.vos.ClientVO;
 import br.com.guilhermebehs.services.ClientService;
 
 @RestController
@@ -26,25 +27,25 @@ public class ClientController {
 	ClientService clientService; 
 
 	@GetMapping
-    public List<ClientModel> getAll(){
+    public List<ClientVO> getAll(){
 		return clientService.getAll();
 	}
 	
 	@GetMapping("/{id}")
-    public ClientModel getById(@PathVariable("id") Long id){
+    public ClientVO getById(@PathVariable("id") Long id){
 		
 		return clientService.getById(id);
 	}
 	
 	@PostMapping
 	@ResponseStatus(code=HttpStatus.CREATED)
-    public ClientModel create(@RequestBody() ClientModel newClient){
+    public ClientVO create(@RequestBody() ClientVO newClient){
 		return clientService.create(newClient);
 	}
 	
 	@PatchMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-    public void update(@PathVariable("id") Long id,@RequestBody() ClientModel client){
+    public void update(@PathVariable("id") Long id,@RequestBody() ClientVO client){
 		clientService.update(id, client);
 	}
 	
