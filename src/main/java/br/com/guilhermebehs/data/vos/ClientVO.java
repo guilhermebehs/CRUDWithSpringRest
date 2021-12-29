@@ -1,15 +1,27 @@
 package br.com.guilhermebehs.data.vos;
 
-public class ClientVO {
+import java.io.Serializable;
 
-private static final long serialVersionUID = 1L;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+
+@JsonPropertyOrder({"id", "last_name", "name", "birth", "address"})
+public class ClientVO implements Serializable {
+
+
+	private static final long serialVersionUID = 4735342484086033668L;
+
 	
 	private Long id;
 	
 	private String name;
 	
+	@JsonProperty("last_name")
 	private String lastName;
 	
+	@JsonIgnore
 	private String birth;
 	
 	private String address;
