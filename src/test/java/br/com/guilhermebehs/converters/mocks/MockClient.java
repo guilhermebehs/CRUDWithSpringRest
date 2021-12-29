@@ -47,7 +47,7 @@ public class MockClient {
 	    	client.setAddress("Addres Test" + number);
 	    	client.setName("First Name Test" + number);
 	    	client.setBirth("1993-03-21");
-	    	client.setId(number.longValue());
+	    	client.setKey(number.longValue());
 	    	client.setLastName("Last Name Test" + number);
 	        return client;
 	    }

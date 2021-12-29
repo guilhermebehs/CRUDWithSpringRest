@@ -1,6 +1,5 @@
 package br.com.guilhermebehs.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import br.com.guilhermebehs.data.models.ClientModel;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import br.com.guilhermebehs.data.vos.ClientVO;
 import br.com.guilhermebehs.services.ClientService;
 
@@ -26,21 +25,29 @@ public class ClientController {
 	@Autowired
 	ClientService clientService; 
 
-	@GetMapping
+	@GetMapping(produces = {"application/json", "application/xml"})
     public List<ClientVO> getAll(){
-		return clientService.getAll();
+		List<ClientVO> clients = clientService.getAll();
+		clients.forEach(client -> 
+		                      client.add(linkTo(methodOn(ClientController.class)
+		                    		       .getById(client.getKey()))
+		                    		       .withSelfRel()));
+		return clients;
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping(value="/{id}", produces = {"application/json", "application/xml"})
     public ClientVO getById(@PathVariable("id") Long id){
-		
-		return clientService.getById(id);
+		ClientVO client = clientService.getById(id); 
+		client.add(linkTo(methodOn(ClientController.class).getById(id)).withSelfRel());
+		return client;
 	}
 	
-	@PostMapping
+	@PostMapping(produces = {"application/json", "application/xml"})
 	@ResponseStatus(code=HttpStatus.CREATED)
     public ClientVO create(@RequestBody() ClientVO newClient){
-		return clientService.create(newClient);
+		ClientVO client = clientService.create(newClient);
+		client.add(linkTo(methodOn(ClientController.class).getById(client.getKey())).withSelfRel());
+		return client;
 	}
 	
 	@PatchMapping("/{id}")
