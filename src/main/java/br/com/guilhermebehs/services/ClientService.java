@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.guilhermebehs.converters.DozerConverter;
 import br.com.guilhermebehs.data.models.ClientModel;
@@ -39,9 +40,16 @@ public class ClientService {
 		clientToUpdate.setAddress(client.getAddress());
 		clientRepository.save(clientToUpdate);
 	}
+	
 	public void delete(Long id){
 		var clientToDelete = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client with id "+id+" not found"));
 		clientRepository.delete(clientToDelete);
+	}
+	
+	@Transactional
+	public void disable(Long id) {
+		clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client with id "+id+" not found"));
+		clientRepository.disableClient(id);
 	}
 
 }

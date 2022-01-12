@@ -27,6 +27,8 @@ public class ClientVO extends ResourceSupport implements Serializable, Cloneable
 	private String birth;
 	
 	private String address;
+	
+	private Boolean enabled;
 		
 
 	public Long getKey() {
@@ -59,14 +61,22 @@ public class ClientVO extends ResourceSupport implements Serializable, Cloneable
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
+	
+	public Boolean getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(address, birth, key, lastName, name);
+		result = prime * result + Objects.hash(address, birth, enabled, key, lastName, name);
 		return result;
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -77,8 +87,8 @@ public class ClientVO extends ResourceSupport implements Serializable, Cloneable
 			return false;
 		ClientVO other = (ClientVO) obj;
 		return Objects.equals(address, other.address) && Objects.equals(birth, other.birth)
-				&& Objects.equals(key, other.key) && Objects.equals(lastName, other.lastName)
-				&& Objects.equals(name, other.name);
+				&& Objects.equals(enabled, other.enabled) && Objects.equals(key, other.key)
+				&& Objects.equals(lastName, other.lastName) && Objects.equals(name, other.name);
 	}
 	
 	@Override
