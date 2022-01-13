@@ -1,8 +1,11 @@
 package br.com.guilhermebehs.services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +21,18 @@ public class ClientService {
 	@Autowired
     ClientRepository clientRepository;
 	
-	public List<ClientVO> getAll(){
-		return DozerConverter.parseListObjects(clientRepository.findAll(), ClientVO.class);
+	public Page<ClientVO> getAll(Pageable pageable){
+		var page = clientRepository.findAll(pageable);
+		return page.map(this::convertToClientVO);
+	}
+	
+	public Page<ClientVO> getByName(String name, Pageable pageable){
+		var page = clientRepository.findPersonByName(name, pageable);
+		return page.map(this::convertToClientVO);
+	}
+	
+	private ClientVO convertToClientVO(ClientModel client) {
+		return DozerConverter.parseObject(client, ClientVO.class);
 	}
 	
     public ClientVO getById(Long id){
