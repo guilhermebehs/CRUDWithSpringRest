@@ -12,7 +12,11 @@ public class FileStorageConfig {
 	}
 
 	public void setUploadDir(String uploadDir) {
-		this.uploadDir = uploadDir;
+        String os = System.getProperty("os.name");
+        if(!os.toLowerCase().contains("windows"))
+        	this.uploadDir = "/home/guilhermebehs/Documents/files";
+        else
+		    this.uploadDir = uploadDir;
 	}
 	
 }
