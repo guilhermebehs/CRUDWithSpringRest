@@ -9,7 +9,8 @@ before_deploy:
 deploy:
   provider: script
   script:
-      docker push guilhermebehs/my-spring-boot;
+      docker tag my-spring-boot ${DOCKER_USERNAME}/my-spring-boot;
+      docker push ${DOCKER_USERNAME}/my-spring-boot;
   on:
       branch: master
 notifications:
