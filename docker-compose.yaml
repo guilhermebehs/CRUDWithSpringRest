@@ -12,11 +12,8 @@ services:
       - some-postgres
     networks:
       - sb_net
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 4
+    command: ["./wait-for-it.sh","-t", "10", "some-postgres:5432", "--strict","--", "mvn", "spring-boot:run"]
+
   
   some-postgres:
     image: postgres
