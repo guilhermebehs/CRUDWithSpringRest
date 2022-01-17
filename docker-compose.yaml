@@ -12,6 +12,11 @@ services:
       - some-postgres
     networks:
       - sb_net
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 4
   
   some-postgres:
     image: postgres
@@ -19,12 +24,13 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 150158
       POSTGRES_DB: spring_boot
+      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - 5432:5432
     networks:
       - sb_net 
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./output_data:/var/lib/postgresql/data/pgdata
     
 
 networks:
