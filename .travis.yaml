@@ -1,0 +1,17 @@
+language: bash
+services: docker
+before_install:
+  - echo "We are in Docker folder!"
+script:
+  - docker-compose build
+before_deploy:
+  - echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin
+deploy:
+  provider: script
+  script:
+      docker push guilhermebehs/my-spring-boot;
+      docker push guilhermebehs/some-postgres;
+  on:
+      branch: master
+notifications:
+  email: false    
