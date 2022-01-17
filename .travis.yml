@@ -10,7 +10,6 @@ deploy:
   provider: script
   script:
       docker push guilhermebehs/my-spring-boot;
-      docker push guilhermebehs/some-postgres;
   on:
       branch: master
 notifications:
