@@ -13,7 +13,7 @@ services:
       - some-postgres
     networks:
       - sb_net
-    command: ["./wait-for-it.sh","-t", "10", "some-postgres:5432", "--strict","--", "mvn", "spring-boot:run"]
+    command: ["./wait-for-it.sh","-t", "10", "some-postgres:5432", "--strict","--", "java", "-jar", "./app.jar"]
 
   
   some-postgres:

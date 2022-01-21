@@ -1,10 +1,15 @@
-FROM maven:3.6.1-jdk-11-slim
+FROM maven:3.6.1-jdk-11-slim as builder
 WORKDIR /home/app
 COPY pom.xml .
 COPY src ./src
+RUN mvn clean install
+
+FROM openjdk:11-slim
+WORKDIR /home/app
+COPY --from=builder /home/app/target/crud-with-spring-rest-0.0.1-SNAPSHOT.jar ./
 COPY wait-for-it.sh .
 RUN chmod +x wait-for-it.sh
 RUN mkdir documents
-RUN mvn install
+RUN mv crud-with-spring-rest-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 3000
-CMD ["mvn", "spring-boot:run"]
+CMD ["java", "-jar", "./app.jar"]
