@@ -1,19 +1,17 @@
 package br.com.guilhermebehs.controllers;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.websocket.server.PathParam;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,14 +25,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 import br.com.guilhermebehs.data.vos.ClientVO;
 import br.com.guilhermebehs.services.ClientService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 
-@Api(tags= {"Client"})
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
+@Tag(name= "Client Endpoint")
 @RestController
 @RequestMapping(path = "client")
 public class ClientController {
@@ -42,7 +38,7 @@ public class ClientController {
 	@Autowired
 	ClientService clientService; 
 
-	@ApiOperation(value="Retrieve all clients")
+	@Operation(summary="Retrieve all clients")
 	@GetMapping(produces = {"application/json", "application/xml"})
     public ResponseEntity<Map<String, Object>> getAll(
     		@RequestParam(value="page", defaultValue = "0") int page, 
@@ -66,8 +62,8 @@ public class ClientController {
    
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
-	@ApiOperation(value="Retrieve a client by")
+
+	@Operation(summary="Retrieve a client by")
 	@GetMapping(path = "/findByName/{name}", produces = {"application/json", "application/xml"})
     public ResponseEntity<Map<String, Object>> getByName(
     		@PathVariable(value="name") String name, 
@@ -92,16 +88,16 @@ public class ClientController {
    
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
-	@ApiOperation(value="Retrieve a client by id")
+
+	@Operation(summary="Retrieve a client by id")
 	@GetMapping(value="/{id}", produces = {"application/json", "application/xml"})
     public ClientVO getById(@PathVariable("id") Long id){
 		ClientVO client = clientService.getById(id); 
 		client.add(linkTo(methodOn(ClientController.class).getById(id)).withSelfRel());
 		return client;
 	}
-	
-	@ApiOperation(value="Create a client")
+
+	@Operation(summary="Create a client")
 	@PostMapping(produces = {"application/json", "application/xml"})
 	@ResponseStatus(code=HttpStatus.CREATED)
     public ClientVO create(@RequestBody() ClientVO newClient){
@@ -109,22 +105,22 @@ public class ClientController {
 		client.add(linkTo(methodOn(ClientController.class).getById(client.getKey())).withSelfRel());
 		return client;
 	}
-	
-	@ApiOperation(value="Update a client by id")
+
+	@Operation(summary="Update a client by id")
 	@PutMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
     public void update(@PathVariable("id") Long id,@RequestBody() ClientVO client){
 		clientService.update(id, client);
 	}
-	
-	@ApiOperation(value="Update a client by id")
+
+	@Operation(summary="Update a client by id")
 	@PatchMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
     public void update(@PathVariable("id") Long id){
 		clientService.disable(id);
 	}
-	
-	@ApiOperation(value="Delete a client by id")
+
+	@Operation(summary="Delete a client by id")
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("id") Long id){

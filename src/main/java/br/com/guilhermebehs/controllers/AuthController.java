@@ -5,6 +5,8 @@ import static org.springframework.http.ResponseEntity.ok;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.guilhermebehs.data.vos.AccountCredentialsVO;
 import br.com.guilhermebehs.jwt.JwtTokenProvider;
 import br.com.guilhermebehs.repositories.UserRepository;
-import io.swagger.annotations.ApiOperation;
 
+@Tag(name= "Authentication Endpoint")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -37,7 +39,7 @@ public class AuthController {
 	@Autowired
 	UserRepository userRepository;
 	
-	@ApiOperation(value="Authenticate a user by credentials")
+	@Operation(summary="Authenticate a user by credentials")
 	@PostMapping(value = "/signin", produces = {"application/json", "application/xml"})
 	@ResponseStatus(code=HttpStatus.CREATED)
     public ResponseEntity<Map<Object, Object>> create(@RequestBody() AccountCredentialsVO data){

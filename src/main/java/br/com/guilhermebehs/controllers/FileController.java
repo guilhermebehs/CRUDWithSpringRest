@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +26,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.com.guilhermebehs.data.vos.UploadFileResponseVO;
 import br.com.guilhermebehs.services.FileStorageService;
-import io.swagger.annotations.Api;
 
-@Api(tags = "FileEndpoint")
+@Tag(name = "File Endpoint")
 @RestController
 @RequestMapping("/file")
 public class FileController {
@@ -35,7 +36,8 @@ public class FileController {
     private FileStorageService fileStorageService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(FileController.class);
-	
+
+	@Operation(summary="Upload file")
 	@PostMapping("/upload")
 	public UploadFileResponseVO uploadFile(@RequestParam("file") MultipartFile file) {
 		String fileName = fileStorageService.storeFile(file);
@@ -49,7 +51,8 @@ public class FileController {
 		
 		return new UploadFileResponseVO(fileName, fileDownloadUri, fileType, fileSize);
 	}
-	
+
+	@Operation(summary="Upload many files")
 	@PostMapping("/uploadMany")
 	public List<UploadFileResponseVO> uploadFiles(@RequestParam("files") MultipartFile[] files) {
 	    return Arrays.asList(files)
@@ -57,7 +60,8 @@ public class FileController {
 	    		 .map(file -> uploadFile(file))
 	    		 .collect(Collectors.toList());
 	}
-	
+
+	@Operation(summary="Download file")
 	@GetMapping("/download/{filename:.+}")
 	public ResponseEntity<Resource> downloadFile(@PathVariable("filename") String fileName, HttpServletRequest request) {
 		Resource resource = fileStorageService.loadFileAsResource(fileName);
