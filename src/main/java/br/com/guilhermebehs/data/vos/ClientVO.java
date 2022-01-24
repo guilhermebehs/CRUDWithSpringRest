@@ -3,7 +3,7 @@ package br.com.guilhermebehs.data.vos;
 import java.io.Serializable;
 import java.util.Objects;
 
-import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -11,7 +11,7 @@ import com.github.dozermapper.core.Mapping;
 
 
 @JsonPropertyOrder({"id", "last_name", "name", "birth", "address"})
-public class ClientVO extends ResourceSupport implements Serializable, Cloneable {
+public class ClientVO extends RepresentationModel<ClientVO> implements Serializable, Cloneable {
 
 
 	private static final long serialVersionUID = 4735342484086033668L;
