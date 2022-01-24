@@ -28,7 +28,7 @@ public class SwaggerConfig {
 	}
 	
 	private ApiInfo apiInfo() {
-		return new ApiInfo("RESTful API with Spring Boot", "My first RESTful API with Java And Spring Boot",
+		return new ApiInfo("RESTful API with Spring Boot", "My first RESTful API with Java And Spring Boot.",
 				            "v1", "", new Contact("Guilherme Behs", "", ""), "", "", Collections.emptyList());
 	}
 
