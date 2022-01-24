@@ -13,7 +13,7 @@ before_deploy:
 deploy:
   provider: script
   script:
-      docker tag my-spring-boot:$TRAVIS_JOB_ID ${DOCKER_USERNAME}/my-spring-boot:$TRAVIS_JOB_ID;
+      docker tag my-spring-boot:latest ${DOCKER_USERNAME}/my-spring-boot:$TRAVIS_JOB_ID;
       docker push ${DOCKER_USERNAME}/my-spring-boot:$TRAVIS_JOB_ID;
   on:
       branch: master
