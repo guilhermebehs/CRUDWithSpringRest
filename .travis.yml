@@ -27,7 +27,7 @@ after_success:
   - pip3 install wheel
   - pip3 install awscli --upgrade --user
   - export PATH=$PATH:$HOME/.local/bin
-  - eval $(aws ecr get-login-password --region $AWS_DEFAULT_REGION)
+  - eval $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
   - docker tag my-spring-boot:latest $IMAGE_REPO_URL:$TRAVIS_JOB_ID
   - docker push $IMAGE_REPO_URL:$TRAVIS_JOB_ID
   - add-apt-repository ppa:eugenesan/ppa
@@ -36,6 +36,6 @@ after_success:
   - curl https://raw.githubusercontent.com/silinternational/ecs-deploy/master/ecs-deploy | sudo tee -a /usr/bin/ecs-deploy
   - sudo chmod +x /usr/bin/ecs-deploy
   - echo "AWS ECS-DEPLOY Setup is Configured"
-  - ecs-deploy -c $CLUSTER_NAME -n $SERVICE_NAME -i $IMAGE_REPO_URL:$TRAVIS_JOB_ID -r $AWS_DEFAULT_REGION -t 240
+  - ecs-deploy -c $CLUSTER_NAME -n $SERVICE_NAME -i $IMAGE_REPO_URL:$TRAVIS_JOB_ID -r $AWS_DEFAULT_REGION
 notifications:
   email: false    
