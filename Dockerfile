@@ -4,7 +4,7 @@ COPY pom.xml .
 COPY src ./src
 RUN mvn clean install
 
-FROM openjdk:11-slim
+FROM openjdk:16-jdk-slim
 WORKDIR /home/app
 COPY --from=builder /home/app/target/crud-with-spring-rest-0.0.1-SNAPSHOT.jar ./
 COPY wait-for-it.sh .
